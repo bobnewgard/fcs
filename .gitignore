@@ -1,0 +1,11 @@
+*.swp
+*.o
+*.a
+*.so
+*.d
+*.vcd
+*.gtkw
+obj_dir/
+doxygen/
+*dep.mk
+exe*
