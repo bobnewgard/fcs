@@ -1,0 +1,54 @@
+/* Aspirational CSS for doxygen */
+
+body
+{
+    counter-reset: cnth2;
+}
+/**/
+h2.mp:before
+{
+    content           : counter(cnth2) ". ";
+    counter-increment : cnth2;
+}
+h2.mp
+{
+    color             : black;
+    border-bottom     : none;
+    font-size         : 1em;
+    font-weight       : bold;
+    counter-reset     : cnth3;
+}
+/**/
+h3.mp:before
+{
+    content           : counter(cnth2) "." counter(cnth3) ". ";
+    counter-increment : cnth3;
+}
+h3.mp
+{
+    color             : black;
+    border-bottom     : none;
+    font-size         : 1em;
+    font-weight       : bold;
+    counter-reset     : cnth4;
+}
+/**/
+h4.mp:before
+{
+    content           : counter(cnth2) "." counter(cnth3) "." counter(cnth4) ". ";
+    counter-increment : cnth4;
+}
+h4.mp
+{
+    color             : black;
+    border-bottom     : none;
+    font-size         : 1em;
+    font-weight       : bold;
+    counter-reset     : cnth5;
+}
+
+/* Override the standard CSS for doxygen */
+
+body, table, div, p, dl {
+	font: 10px/14px fixed;
+}
