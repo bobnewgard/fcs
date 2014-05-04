@@ -7,6 +7,5 @@
 *.gtkw
 obj_dir/
 doxygen/
-Readme.md
 *dep.mk
 exe*

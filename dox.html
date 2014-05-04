@@ -1,0 +1,286 @@
+/* vim: set ff=unix syn=xhtml wm=0 sts=2 sw=2 et : */
+/*! \mainpage %fcs Project
+
+    <h2 class="mp">Introduction</h2>
+
+    <h3 class="mp">FCS</h3>
+    <p>
+      This project and the nomenclature used within are based on IEEE standard
+      802.3-2008 clause 3.
+    </p>
+    <p>
+      IEEE standard 802 documents were obtained via the [IEEE Get
+      Program](http://standards.ieee.org/about/get/).
+    </p>
+
+    <h3 class="mp">Use Cases</h3>
+
+    <h4 class="mp">Supported Use Cases</h4>
+    <ul>
+      <li>Reference implementation of IEEE 802.3 FCS functions for various datapath widths</li>
+      <li>Validation of FCS functions</li>
+      <li>Demonstration of FCS for a 512-bit datapath with varying packet lengths</li>
+    </ul>
+
+    <h4 class="mp">Unsupported Use Cases</h4>
+    <ul>
+      <li>Invalid data between start of frame (SOF) and end of frame (EOF) indications</li>
+    </ul>
+
+    <h3 class="mp">FCS Calculation</h3>
+    <p>
+      The FCS calculation proceeds by first calculating the FCS intermediate
+      value using an LFSR then bit-reversing the result to get the final value.
+    </p>
+    <h4 class="mp">FCS LFSR</h4>
+    <p>
+      The FCS intermediate value calculation is shown below implemented in a
+      linear feedback shift register (LFSR).
+    <p>
+    </p>
+      The value is accumulated in the R[31:0] registers from data fed LSB-first
+      into the LFSR.
+    <p>
+    </p>
+      This LSB-first protocol matches the requirement of 802.3 clause 3 for
+      how non-FCS bits are placed on the wire.
+    </p>
+    <img src="fcs-1.svg" alt="1-bit FCS, image/svg+xml"/>
+
+    <h4 class="mp">FCS Bit-Reverse</h4>
+    <p>
+      The accumulated R[31:0] value is inverted according to the algorithm in
+      802.3 clause 3.2.9 and bit-reversed per byte to support transmission of
+      bit 31 first.
+    </p>
+    <img src="fcs-brev.svg" alt="FCS bit reversal, image/svg+xml"/>
+
+    <h3 class="mp">FCS Functions</h3>
+    <p>
+      FCS Functions implemented as part of this project cover datapath widths
+      of 1, 8, 16, 32, 64, 128, 256 and 512 bits.  The 1-bit function may be
+      useful only for demonstration purposes, but the other functions could
+      be useful in real applications.
+    </p>
+
+    <h3 class="mp">FCS Residue</h3>
+    <p>
+      The residue for this FCS implementation is 0xC704DD7B.
+    </p>
+
+    <h3 class="mp">Test Benches</h3>
+    <p>
+      Test benches implemented as part of this project are used to validate
+      FCS functions, individually or in groups.
+    </p>
+
+    <h3 class="mp">SystemC</h3>
+    <p>
+      The test benches use the [Accellera](http://www.accellera.org/home/)
+      implementation of the SystemC classes to provide a simulation kernel and
+      the basis of the driver, checker and utility classes within test benches.
+    <p>
+    </p>
+      The path to the SystemC installation is set in the makefiles using the
+      make variable SYSC_DIR.
+    </p>
+
+    <h3 class="mp">Verilator</h3>
+    <p>
+      The verilog  units under test (UUTs) are compiled into SystemC classes
+      using [Verilator](http://www.veripool.org/wiki/verilator).
+    <p>
+    </p>
+      The verilator environment is wrapped around the verilator executable
+      using the "env-veripool" wrapper script such that the command
+      <div class="mp-pre"><pre class="mp">env-veripool verilator --version</pre></div>
+      returns the verilator version and
+      <div class="mp-pre"><pre class="mp">env-veripool</pre></div>
+      returns a listing of the verilator environment.
+    </p>
+    <p>
+      The paths to the Verilator and SystemC installation directories are
+      set in the script using the variables VERIPOOL_DIR and SYSTEMC_DIR,
+      respectively.
+    </p>
+
+    <h2 class="mp">Test Benches</h2>
+    <p>
+      The test benches drive a verilog unit under test and verify that the
+      UUT outputs are correct.
+    <p>
+    </p>
+      The verified outputs are FCS (the FCS value calculated over destination
+      address, source address, length/type, MAC client data and pad) and residue
+      (the FCS value calculated over the entire frame, including FCS).
+    <p>
+    </p>
+      The test bench name indicates the width in bits of the implemented
+      datapath.
+    </p>
+
+    <h3 class="mp">Test Bench List</h3>
+    <ul>
+      <li>tb_1</li>
+      <li>tb_8</li>
+      <li>tb_16</li>
+      <li>tb_32</li>
+      <li>tb_512</li>
+    </ul>
+
+    <h3 class="mp">Test Bench tb_1</h3>
+    <p>
+      Demonstrates serialization of 8-bit data into a 1-bit FCS function.
+    </p>
+
+    <h3 class="mp">Test Bench tb_512</h3>
+    <p>
+      Demonstrates how bytes from a wide datapath are fed into a series of FCS
+      functions to obtain a final FCS.  The core of the UUT FCS implementation
+      is shown in the block diagram below. Note that it is implemented as a
+      pipeline where all registers have a common clock.
+    <p>
+    </p>
+      Frames are delimited by SOF and EOF.  Datapath modulo is indicated
+      by mod[5:0]. When mod[5:0] is zero, all 64 bytes of dat[511:0] are
+      valid. Other mod[5:0] values directly indicate the number of valid bytes
+      in dat[511:0].  For arriving data, valid bytes are always in the MSBs.
+      Note that the datapath maintains this by shifting valid bytes to the
+      MSB in the later pipeline stages.
+    <p>
+    </p>
+      In the input and first stages, the EOF and mod[5:0] values are modified
+      to remove the FCS from the incoming frame.  In subsequent stages, data
+      is applied to the inputs of the individual FCS blocks based on the value
+      of mod at that stage.
+    </p>
+    <img src="fcs-512.svg" alt="512-bit FCS, image/svg+xml"/>
+
+    <h2 class="mp">Verilog Files</h2>
+
+    <h3 class="mp">Verilog File List</h3>
+    <ul>
+      <li>
+        FCS functions
+        <ul>
+          <li>fcs32_1.v</li>
+          <li>fcs32_8.v</li>
+          <li>fcs32_16.v</li>
+          <li>fcs32_32.v</li>
+          <li>fcs32_64.v</li>
+          <li>fcs32_128.v</li>
+          <li>fcs32_256.v</li>
+          <li>fcs32_512.v</li>
+          <li>fcs32_brev.v</li>
+        </ul>
+      </li>
+      <li>
+        UUT implementations
+        <ul>
+          <li>uut_1_top.v</li>
+          <li>uut_1_bytep.v</li>
+          <li>uut_1_bitp.v</li>
+          <li>uut_8_top.v</li>
+          <li>uut_16_top.v</li>
+          <li>uut_32_top.</li>
+          <li>uut_512_top.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3 class="mp">Verilog Files and Doxygen</h3>
+    <p>
+      Note that verilog file documentation consists only of per-file
+      documentation written by hand and variable listings generated
+      by doxygen.
+    <p>
+    </p>
+      The Doxygen platform may be modified to support Verilog by
+      patching the Doxygen source or by specifying a filter script
+      specifically for Verilog files.  Searches for "doxygen verilog"
+      point to resources for doing this.
+    </p>
+
+    <h2 class="mp">
+      <a class="mp" name="deps">Dependencies</a>
+    </h2>
+
+    <h3 class="mp">Validated Environments</h3>
+    <table>
+      <tr>
+        <th>Linux</th>
+        <th>libc</th>
+        <th>gcc</th>
+        <th>SystemC</th>
+        <th>Verilator</th>
+        <th>make</th>
+        <th>bash</th>
+        <th>Python</th>
+        <th>Scapy</th>
+      </tr>
+      <tr>
+        <td>Debian 3.2.0-4-amd64</td>
+        <td>2.13</td>
+        <td>4.7.2</td>
+        <td>2.3.0</td>
+        <td>3.847</td>
+        <td>3.81</td>
+        <td>4.2.37</td>
+        <td>2.7.3</td>
+        <td>2.2.0</td>
+      </tr>
+    </table>
+
+    <h3 class="mp">Other Dependencies</h3>
+    <p>
+      Dependencies beyond those listed above under the Validated Environments
+      heading are the projects
+    </p>
+    <ul>
+      <li><a href="https://github.com/bobnewgard/SyscMake">SyscMake</a></li>
+      <li><a href="https://github.com/bobnewgard/SyscMsg">SyscMsg</a></li>
+      <li><a href="https://github.com/bobnewgard/SyscJson">SyscJson</a></li>
+      <li><a href="https://github.com/bobnewgard/SyscDrv">SyscDrv</a></li>
+      <li><a href="https://github.com/bobnewgard/SyscClk">SyscClk</a></li>
+      <li><a href="https://github.com/bobnewgard/SyscFCBus">SyscFCBus</a></li>
+    </ul>
+
+    <h2 class="mp">
+      <a class="mp" name="inst">Installation</a>
+    </h2>
+    <ol>
+      <li>
+        Make sure you have installed the components shown in the "Validated Environments" section
+        <ul>
+          <li>Install SystemC from source, since it is unlikely to be packaged</li>
+          <li>Install Verilator from source to get the latest version</li>
+        </ul>
+      </li>
+      <li>
+        Clone repos listed in "Other Dependencies"
+        <ul>
+          <li>Clone such that fcs and the Sysc* repos are in the same directory</li>
+        </ul>
+      </li>
+      <li>Modify the path to the SystemC installation, SYSC_DIR, in SyscMake/vars.mk</li>
+      <li>
+        Modify the path to the SystemC and Veripool installations, SYSTEMC_DIR and 
+        VERIPOOL_DIR respectively, in SyscMake/env-veripool
+      </li>
+      <li>execute "make" for a list of available targets</li>
+    </ol>
+
+    <h2 class="mp">
+      <a class="mp" name="lics">Licenses</a>
+    </h2>
+    <h3 class="mp">License for Code</h3>
+    <p>
+      The code in this (fcs) project is licensed under the [GPLv3](http://www.gnu.org/licenses/)
+    </p>
+    <h3 class="mp">License for This Project Summary</h3>
+    <p>
+      This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 Unported License.
+      To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.
+    </p>
+
+*/

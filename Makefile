@@ -74,9 +74,6 @@ $(eval $(root-targets))
 
 # add auxiliary targets here, if needed
 define dox
-        rm -f Readme.md
-        echo "\\mainpage %fcs Project" >> Readme.md
-        cat README.md >> Readme.md
         doxygen dox.conf
 	cp *.svg doxygen/html/.
 endef
@@ -84,7 +81,7 @@ endef
 help         : $(HELP)  ; $(root-help-core)
 dox-help     :          ; $(call root-help-aux,dox,build doxygen)
 dox          :          ; $(dox)
-dox-clean    :          ; rm -rf doxygen Readme.md
+dox-clean    :          ; rm -rf doxygen
 ver-clean    :          ; rm -rf ver/obj_dir
 wav5120      :          ; gtkwave tb_512/test_0/test.vcd tb_512/tb.gtkw &> /dev/null &
 wav5120-help :          ; $(call root-help-aux,wav5120,run gtkwave on tb_512 results)
