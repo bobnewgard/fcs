@@ -21,6 +21,22 @@
 `include "fcs32_8.v"
 `include "fcs32_brev.v"
 
+typedef struct packed
+{
+    logic [31:0] usr;
+    logic        err;
+    logic        val;
+    logic        sof;
+    logic        eof;
+    logic  [7:0] dat;
+    logic        mod;
+}
+FCBus_8;
+
+FCBus_8 bus = 0;
+
+wire _unused_ok = &{bus};
+
 module uut_8_top
 (
     output wire [31:0] res_o,
