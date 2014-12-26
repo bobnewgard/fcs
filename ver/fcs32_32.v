@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Robert Newgard
+ * Copyright 2014 Robert Newgard
  *
  * This file is part of fcs.
  *
@@ -26,7 +26,6 @@
  */
 
 function [31:0] fcs32_32_core(input [31:0] di, input [31:0] ci);
-begin
 	fcs32_32_core[0] =  ci[0] ^ ci[6] ^ ci[9] ^ ci[10] ^ ci[12] ^ ci[16] ^ ci[24] ^ ci[25] ^ ci[26] ^ ci[28] ^ ci[29] ^ ci[30] ^ ci[31] ^ di[0] ^ di[1] ^ di[2] ^ di[3] ^ di[5] ^ di[6] ^ di[7] ^ di[15] ^ di[19] ^ di[21] ^ di[22] ^ di[25] ^ di[31];
 	fcs32_32_core[1] =  ci[0] ^ ci[1] ^ ci[6] ^ ci[7] ^ ci[9] ^ ci[11] ^ ci[12] ^ ci[13] ^ ci[16] ^ ci[17] ^ ci[24] ^ ci[27] ^ ci[28] ^ di[3] ^ di[4] ^ di[7] ^ di[14] ^ di[15] ^ di[18] ^ di[19] ^ di[20] ^ di[22] ^ di[24] ^ di[25] ^ di[30] ^ di[31];
 	fcs32_32_core[2] =  ci[0] ^ ci[1] ^ ci[2] ^ ci[6] ^ ci[7] ^ ci[8] ^ ci[9] ^ ci[13] ^ ci[14] ^ ci[16] ^ ci[17] ^ ci[18] ^ ci[24] ^ ci[26] ^ ci[30] ^ ci[31] ^ di[0] ^ di[1] ^ di[5] ^ di[7] ^ di[13] ^ di[14] ^ di[15] ^ di[17] ^ di[18] ^ di[22] ^ di[23] ^ di[24] ^ di[25] ^ di[29] ^ di[30] ^ di[31];
@@ -59,17 +58,12 @@ begin
 	fcs32_32_core[29] =  ci[3] ^ ci[6] ^ ci[7] ^ ci[9] ^ ci[13] ^ ci[21] ^ ci[22] ^ ci[23] ^ ci[25] ^ ci[26] ^ ci[27] ^ ci[28] ^ ci[29] ^ ci[31] ^ di[0] ^ di[2] ^ di[3] ^ di[4] ^ di[5] ^ di[6] ^ di[8] ^ di[9] ^ di[10] ^ di[18] ^ di[22] ^ di[24] ^ di[25] ^ di[28];
 	fcs32_32_core[30] =  ci[4] ^ ci[7] ^ ci[8] ^ ci[10] ^ ci[14] ^ ci[22] ^ ci[23] ^ ci[24] ^ ci[26] ^ ci[27] ^ ci[28] ^ ci[29] ^ ci[30] ^ di[1] ^ di[2] ^ di[3] ^ di[4] ^ di[5] ^ di[7] ^ di[8] ^ di[9] ^ di[17] ^ di[21] ^ di[23] ^ di[24] ^ di[27];
 	fcs32_32_core[31] =  ci[5] ^ ci[8] ^ ci[9] ^ ci[11] ^ ci[15] ^ ci[23] ^ ci[24] ^ ci[25] ^ ci[27] ^ ci[28] ^ ci[29] ^ ci[30] ^ ci[31] ^ di[0] ^ di[1] ^ di[2] ^ di[3] ^ di[4] ^ di[6] ^ di[7] ^ di[8] ^ di[16] ^ di[20] ^ di[22] ^ di[23] ^ di[26];
-end
 endfunction
 
 function [31:0] fcs32_32_brev(input [31:0] di);
-begin
 	fcs32_32_brev[31:0] = {di[7:0], di[15:8], di[23:16], di[31:24]};
-end
 endfunction
 
 function [31:0] fcs32_32(input [31:0] di, input [31:0] ci);
-begin
 	fcs32_32[31:0] = fcs32_32_core(fcs32_32_brev(di[31:0]), ci[31:0]);
-end
 endfunction

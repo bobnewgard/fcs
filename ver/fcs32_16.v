@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Robert Newgard
+ * Copyright 2014 Robert Newgard
  *
  * This file is part of fcs.
  *
@@ -26,7 +26,6 @@
  */
 
 function [31:0] fcs32_16_core(input [15:0] di, input [31:0] ci);
-begin
 	fcs32_16_core[0] =  ci[16] ^ ci[22] ^ ci[25] ^ ci[26] ^ ci[28] ^ di[3] ^ di[5] ^ di[6] ^ di[9] ^ di[15];
 	fcs32_16_core[1] =  ci[16] ^ ci[17] ^ ci[22] ^ ci[23] ^ ci[25] ^ ci[27] ^ ci[28] ^ ci[29] ^ di[2] ^ di[3] ^ di[4] ^ di[6] ^ di[8] ^ di[9] ^ di[14] ^ di[15];
 	fcs32_16_core[2] =  ci[16] ^ ci[17] ^ ci[18] ^ ci[22] ^ ci[23] ^ ci[24] ^ ci[25] ^ ci[29] ^ ci[30] ^ di[1] ^ di[2] ^ di[6] ^ di[7] ^ di[8] ^ di[9] ^ di[13] ^ di[14] ^ di[15];
@@ -59,17 +58,12 @@ begin
 	fcs32_16_core[29] =  ci[13] ^ ci[19] ^ ci[22] ^ ci[23] ^ ci[25] ^ ci[29] ^ di[2] ^ di[6] ^ di[8] ^ di[9] ^ di[12];
 	fcs32_16_core[30] =  ci[14] ^ ci[20] ^ ci[23] ^ ci[24] ^ ci[26] ^ ci[30] ^ di[1] ^ di[5] ^ di[7] ^ di[8] ^ di[11];
 	fcs32_16_core[31] =  ci[15] ^ ci[21] ^ ci[24] ^ ci[25] ^ ci[27] ^ ci[31] ^ di[0] ^ di[4] ^ di[6] ^ di[7] ^ di[10];
-end
 endfunction
 
 function [15:0] fcs32_16_brev(input [15:0] di);
-begin
 	fcs32_16_brev[15:0] = {di[7:0], di[15:8]};
-end
 endfunction
 
 function [31:0] fcs32_16(input [15:0] di, input [31:0] ci);
-begin
 	fcs32_16[31:0] = fcs32_16_core(fcs32_16_brev(di[15:0]), ci[31:0]);
-end
 endfunction

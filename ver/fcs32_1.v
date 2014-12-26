@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Robert Newgard
+ * Copyright 2014 Robert Newgard
  *
  * This file is part of fcs.
  *
@@ -25,7 +25,6 @@
  */
 
 function [31:0] fcs32_1(input di, input [31:0] ci);
-begin
 	fcs32_1[0] =  ci[31] ^ di;
 	fcs32_1[1] =  ci[0] ^ ci[31] ^ di;
 	fcs32_1[2] =  ci[1] ^ ci[31] ^ di;
@@ -58,5 +57,4 @@ begin
 	fcs32_1[29] =  ci[28];
 	fcs32_1[30] =  ci[29];
 	fcs32_1[31] =  ci[30];
-end
 endfunction

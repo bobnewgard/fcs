@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Robert Newgard
+ * Copyright 2014 Robert Newgard
  *
  * This file is part of fcs.
  *
@@ -26,7 +26,6 @@
  */
 
 function [31:0] fcs32_64_core(input [63:0] di, input [31:0] ci);
-begin
 	fcs32_64_core[0] =  ci[0] ^ ci[2] ^ ci[5] ^ ci[12] ^ ci[13] ^ ci[15] ^ ci[16] ^ ci[18] ^ ci[21] ^ ci[22] ^ ci[23] ^ ci[26] ^ ci[28] ^ ci[29] ^ ci[31] ^ di[0] ^ di[2] ^ di[3] ^ di[5] ^ di[8] ^ di[9] ^ di[10] ^ di[13] ^ di[15] ^ di[16] ^ di[18] ^ di[19] ^ di[26] ^ di[29] ^ di[31] ^ di[32] ^ di[33] ^ di[34] ^ di[35] ^ di[37] ^ di[38] ^ di[39] ^ di[47] ^ di[51] ^ di[53] ^ di[54] ^ di[57] ^ di[63];
 	fcs32_64_core[1] =  ci[1] ^ ci[2] ^ ci[3] ^ ci[5] ^ ci[6] ^ ci[12] ^ ci[14] ^ ci[15] ^ ci[17] ^ ci[18] ^ ci[19] ^ ci[21] ^ ci[24] ^ ci[26] ^ ci[27] ^ ci[28] ^ ci[30] ^ ci[31] ^ di[0] ^ di[1] ^ di[3] ^ di[4] ^ di[5] ^ di[7] ^ di[10] ^ di[12] ^ di[13] ^ di[14] ^ di[16] ^ di[17] ^ di[19] ^ di[25] ^ di[26] ^ di[28] ^ di[29] ^ di[30] ^ di[35] ^ di[36] ^ di[39] ^ di[46] ^ di[47] ^ di[50] ^ di[51] ^ di[52] ^ di[54] ^ di[56] ^ di[57] ^ di[62] ^ di[63];
 	fcs32_64_core[2] =  ci[0] ^ ci[3] ^ ci[4] ^ ci[5] ^ ci[6] ^ ci[7] ^ ci[12] ^ ci[19] ^ ci[20] ^ ci[21] ^ ci[23] ^ ci[25] ^ ci[26] ^ ci[27] ^ di[4] ^ di[5] ^ di[6] ^ di[8] ^ di[10] ^ di[11] ^ di[12] ^ di[19] ^ di[24] ^ di[25] ^ di[26] ^ di[27] ^ di[28] ^ di[31] ^ di[32] ^ di[33] ^ di[37] ^ di[39] ^ di[45] ^ di[46] ^ di[47] ^ di[49] ^ di[50] ^ di[54] ^ di[55] ^ di[56] ^ di[57] ^ di[61] ^ di[62] ^ di[63];
@@ -59,17 +58,12 @@ begin
 	fcs32_64_core[29] =  ci[2] ^ ci[9] ^ ci[10] ^ ci[12] ^ ci[13] ^ ci[15] ^ ci[18] ^ ci[19] ^ ci[20] ^ ci[23] ^ ci[25] ^ ci[26] ^ ci[28] ^ ci[30] ^ ci[31] ^ di[0] ^ di[1] ^ di[3] ^ di[5] ^ di[6] ^ di[8] ^ di[11] ^ di[12] ^ di[13] ^ di[16] ^ di[18] ^ di[19] ^ di[21] ^ di[22] ^ di[29] ^ di[32] ^ di[34] ^ di[35] ^ di[36] ^ di[37] ^ di[38] ^ di[40] ^ di[41] ^ di[42] ^ di[50] ^ di[54] ^ di[56] ^ di[57] ^ di[60];
 	fcs32_64_core[30] =  ci[0] ^ ci[3] ^ ci[10] ^ ci[11] ^ ci[13] ^ ci[14] ^ ci[16] ^ ci[19] ^ ci[20] ^ ci[21] ^ ci[24] ^ ci[26] ^ ci[27] ^ ci[29] ^ ci[31] ^ di[0] ^ di[2] ^ di[4] ^ di[5] ^ di[7] ^ di[10] ^ di[11] ^ di[12] ^ di[15] ^ di[17] ^ di[18] ^ di[20] ^ di[21] ^ di[28] ^ di[31] ^ di[33] ^ di[34] ^ di[35] ^ di[36] ^ di[37] ^ di[39] ^ di[40] ^ di[41] ^ di[49] ^ di[53] ^ di[55] ^ di[56] ^ di[59];
 	fcs32_64_core[31] =  ci[1] ^ ci[4] ^ ci[11] ^ ci[12] ^ ci[14] ^ ci[15] ^ ci[17] ^ ci[20] ^ ci[21] ^ ci[22] ^ ci[25] ^ ci[27] ^ ci[28] ^ ci[30] ^ di[1] ^ di[3] ^ di[4] ^ di[6] ^ di[9] ^ di[10] ^ di[11] ^ di[14] ^ di[16] ^ di[17] ^ di[19] ^ di[20] ^ di[27] ^ di[30] ^ di[32] ^ di[33] ^ di[34] ^ di[35] ^ di[36] ^ di[38] ^ di[39] ^ di[40] ^ di[48] ^ di[52] ^ di[54] ^ di[55] ^ di[58];
-end
 endfunction
 
 function [63:0] fcs32_64_brev(input [63:0] di);
-begin
 	fcs32_64_brev[63:0] = {di[7:0], di[15:8], di[23:16], di[31:24], di[39:32], di[47:40], di[55:48], di[63:56]};
-end
 endfunction
 
 function [31:0] fcs32_64(input [63:0] di, input [31:0] ci);
-begin
 	fcs32_64[31:0] = fcs32_64_core(fcs32_64_brev(di[63:0]), ci[31:0]);
-end
 endfunction

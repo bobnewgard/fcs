@@ -89,3 +89,145 @@ vlt5120      :          ; gtkwave tb_512/test_0/vlt.vcd tb_512/test_0/vlt.gtkw &
 vlt5120-help :          ; $(call root-help-aux,vlt5120,run gtkwave on uut_512_top results)
 
 .DEFAULT_GOAL := help
+
+define json
+    {
+        "build-ver-lib" : [
+	    {
+		"work-dir" : "ver",
+	    	"mod-name" : "uut1",
+		"mod-srcs" : ["ver/uut_1_top.v", "ver/uut_1_bitp.v", "ver/uut_1_bytep.v"],
+	    },
+	    {
+		"work-dir" : "ver",
+	    	"mod-name" : "uut8",
+		"mod-srcs" : ["ver/uut_8_top.v"],
+	    },
+	    {
+		"work-dir" : "ver",
+	    	"mod-name" : "uut16",
+		"mod-srcs" : ["ver/uut_16_top.v"],
+	    },
+	    {
+		"work-dir" : "ver",
+	    	"mod-name" : "uut32",
+		"mod-srcs" : ["ver/uut_32_top.v"],
+	    },
+	    {
+		"work-dir" : "ver",
+	    	"mod-name" : "uut512",
+		"mod-srcs" : ["ver/uut_512_top.v"],
+	    },
+	],
+        "build-sysc-lib" : [
+	    {
+		"work-dir" : "tb_1",
+		"lib-name" : "tb1",
+		"lib-srcs" : ["tb_1/tb.cxx"],
+		"incl-dirs" : [
+			"../SyscClk", "../SyscFCBus", "$(VLTR_IDIR)", "../SyscMsg",
+			"../SyscDrv", "../SyscJson", "ver/obj_dir", "."
+		],
+	    },
+	    {
+		"work-dir" : "tb_8",
+		"lib-name" : "tb8",
+		"lib-srcs" : ["tb_8/tb.cxx"],
+		"incl-dirs" : [
+			"../SyscClk", "../SyscFCBus", "$(VLTR_IDIR)", "../SyscMsg",
+			"../SyscDrv", "../SyscJson", "ver/obj_dir", "."
+		],
+	    },
+	    {
+		"work-dir" : "tb_16",
+		"lib-name" : "tb16",
+		"lib-srcs" : ["tb_16/tb.cxx"],
+		"incl-dirs" : [
+			"../SyscClk", "../SyscFCBus", "$(VLTR_IDIR)", "../SyscMsg",
+			"../SyscDrv", "../SyscJson", "ver/obj_dir", "."
+		],
+	    },
+	    {
+		"work-dir" : "tb_32",
+		"lib-name" : "tb32",
+		"lib-srcs" : ["tb_32/tb.cxx"],
+		"incl-dirs" : [
+			"../SyscClk", "../SyscFCBus", "$(VLTR_IDIR)", "../SyscMsg",
+			"../SyscDrv", "../SyscJson", "ver/obj_dir", "."
+		],
+	    },
+	    {
+		"work-dir" : "tb_512",
+		"lib-name" : "tb512",
+		"lib-srcs" : ["tb_512/tb.cxx"],
+		"incl-dirs" : [
+			"../SyscClk", "../SyscFCBus", "$(VLTR_IDIR)", "../SyscMsg",
+			"../SyscDrv", "../SyscJson", "ver/obj_dir", "."
+		],
+	    },
+	    {
+		"work-dir" : "tb_1/test_0",
+		"lib-name" : "test10",
+		"lib-srcs" : ["tb_1/test_0/test.cxx, tb_1/test_0/sc_main.cxx"],
+		"incl-dirs" : [
+			"../SyscClk", "../SyscFCBus", "$(VLTR_IDIR)", "../SyscMsg",
+			"../SyscDrv", "../SyscJson", "ver/obj_dir", "tb_1", "."
+		],
+	    },
+	    {
+		"work-dir" : "tb_8/test_0",
+		"lib-name" : "test80",
+		"lib-srcs" : ["tb_8/test_0/test.cxx, tb_8/test_0/sc_main.cxx"],
+		"incl-dirs" : [
+			"../SyscClk", "../SyscFCBus", "$(VLTR_IDIR)", "../SyscMsg",
+			"../SyscDrv", "../SyscJson", "ver/obj_dir", "tb_8", "."
+		],
+	    },
+	    {
+		"work-dir" : "tb_16/test_0",
+		"lib-name" : "test160",
+		"lib-srcs" : ["tb_16/test_0/test.cxx, tb_16/test_0/sc_main.cxx"],
+		"incl-dirs" : [
+			"../SyscClk", "../SyscFCBus", "$(VLTR_IDIR)", "../SyscMsg",
+			"../SyscDrv", "../SyscJson", "ver/obj_dir", "tb_16", "."
+		],
+	    },
+	    {
+		"work-dir" : "tb_32/test_0",
+		"lib-name" : "test320",
+		"lib-srcs" : ["tb_32/test_0/test.cxx, tb_32/test_0/sc_main.cxx"],
+		"incl-dirs" : [
+			"../SyscClk", "../SyscFCBus", "$(VLTR_IDIR)", "../SyscMsg",
+			"../SyscDrv", "../SyscJson", "ver/obj_dir", "tb_32", "."
+		],
+	    },
+	    {
+		"work-dir" : "tb_512/test_0",
+		"lib-name" : "test5120",
+		"lib-srcs" : ["tb_512/test_0/test.cxx, tb_512/test_0/sc_main.cxx"],
+		"incl-dirs" : [
+			"../SyscClk", "../SyscFCBus", "$(VLTR_IDIR)", "../SyscMsg",
+			"../SyscDrv", "../SyscJson", "ver/obj_dir", "tb_512", "."
+		],
+	    },
+	],
+	"build-exe" : [
+	    {
+		"work-dir"  : "tb_1/test_0",
+		"exe-name"  : "tb_1/test_0/test10",
+		"link-libs" : {
+		    "syscmsg"  : "../SyscMsg",
+		    "syscdrv"  : "../SyscDrv",
+		    "syscjson" : "../SyscJson",
+		    "tb1"      : "tb_1"
+		    "uut1"     : "ver/obj_dir"
+		    "test1"    : "."
+		},
+	    },
+	],
+	"dox" : [
+		"work-dir"  : ".",
+		"conf-fil"  : "dox.conf",
+	],
+    }
+endef
