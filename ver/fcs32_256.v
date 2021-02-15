@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Robert Newgard
+ * Copyright 2013-2021 Robert Newgard
  *
  * This file is part of fcs.
  *
